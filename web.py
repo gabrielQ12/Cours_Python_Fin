@@ -11,8 +11,8 @@ import urllib3
 class WebCrawler:
 
     def __init__(self, url, proxy=None, user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0"):
-        if url.endswith("/"):
-            self.url = url.rstrip("/")
+        if not url.endswith("/")and not url.endswith(".php") and not url.endswith(".html"):
+            self.url = url + "/"
         else:
             self.url = url
             self.proxy = proxy
@@ -102,13 +102,7 @@ class WebCrawler:
         return cookies_list
 
 
-    def crawl(self,page=None):
-        """
-        Crawl a page recursively, adding the links to the url list
-        :param page: the requested page, if not set the default instance url is used
-        :return:
-        """
-
+    def _do_crawl(self, queue, page=None):
         try:
             page_links = self.get_page_links(page)
             for link in page_links:
@@ -116,11 +110,46 @@ class WebCrawler:
                     break
                 if link not in self.link_list:
                     self.link_list.append(link)
-                    print("Link addeed to the list : " + link)
-                    self.crawl(link)
+                    queue.put(link)
+                    self._do_crawl(queue, link)
         except KeyboardInterrupt:
             print("\nProgram interrupted by user.")
             sys.exit(1)
         except Exception as e:
             print("Error :" + str(e))
             sys.exit(1)
+
+
+    def _crawl_end_callback(self, crawl_thread, crawl_queue):
+        crawl_thread.join()
+        crawl_queue.put("END")
+
+
+    def crawl(self, crawl_queue, page=None):
+        crawl_thread = threading.Thread(target=self._do_crawl, args=(crawl_queue,page))
+        crawl_thread.start()
+        thread2 = threading.Thread(target=self._crawl_end_callback, args=(crawl_thread, crawl_queue))
+        thread2.start()
+
+    # def crawl(self,page=None):
+    #     """
+    #     Crawl a page recursively, adding the links to the url list
+    #     :param page: the requested page, if not set the default instance url is used
+    #     :return:
+    #     """
+
+    #     try:
+    #         page_links = self.get_page_links(page)
+    #         for link in page_links:
+    #             if self.stopped:
+    #                 break
+    #             if link not in self.link_list:
+    #                 self.link_list.append(link)
+    #                 print("Link addeed to the list : " + link)
+    #                 self.crawl(link)
+    #     except KeyboardInterrupt:
+    #         print("\nProgram interrupted by user.")
+    #         sys.exit(1)
+    #     except Exception as e:
+    #         print("Error :" + str(e))
+    #         sys.exit(1)
