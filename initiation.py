@@ -5,7 +5,7 @@ import mechanize
 from bs4 import BeautifulSoup
 
 
-def view_page(url, proxy=None):
+def view_links_of_page(url, proxy=None):
     browser = mechanize.Browser()
     browser.set_handle_robots(False)
     user_agent = [("User-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0")]
