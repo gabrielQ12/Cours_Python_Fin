@@ -59,10 +59,10 @@ def btn_scan_click():
         messagebox.showerror("Erreur d'URL", "L 'URL saisie n'est pas valide ! ")
         return
     if wc is None:
-        wc = web.WebCrawler(target)
+        wc = web.WebScanner(target)
     elif wc.url not in target:
         wc.stopped = True
-        wc = web.WebCrawler(target)
+        wc = web.WebScanner(target)
     if isscanning:
         rep = messagebox.askquestion("Scan en cours" , "Un scan est déjà en cours,  souhaitez-vous l'arreter ? ")
         if rep == 'yes':

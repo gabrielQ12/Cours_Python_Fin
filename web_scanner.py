@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+import threading
+import urllib
+import urllib.request
+import urllib.response
 import sys
 import mechanize
 from bs4 import BeautifulSoup
@@ -8,7 +12,7 @@ from urllib.parse import urlparse
 import urllib3
 
 
-class WebCrawler:
+class WebScanner:
 
     def __init__(self, url, proxy=None, user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0"):
         if not url.endswith("/")and not url.endswith(".php") and not url.endswith(".html"):
