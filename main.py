@@ -10,12 +10,26 @@ def view_page(url, proxy=None):
     browser.set_handle_robots(False)
     user_agent = [("User-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0")]
     browser.addheaders = user_agent
+    url_list = []
     if proxy:
         browser.set_proxies(proxy)
+    if url.endswith("/"):
+        url = url.rstrip("/")
     page = browser.open(url)
-    for cookie in browser.cookiejar:
-        print(cookie)
-    print(page.read())
+    soup = BeautifulSoup(page, "html.parser")
+    for link in soup.find_all("a"):
+        l = link.get("href")
+        if l is not None and len(l) > 0 and not l.startswith("#"):
+         if l.startswith("/"):
+             l = url + l
+         if l not in url_list:
+                url_list.append(l)
+    for link in url_list:
+        print(link)
+
+    # for cookie in browser.cookiejar:
+    #     print(cookie)
+    # print(page.read())
 
 
-view_page('https://icanhazip.com') #{"https" : "212.34.250.14:3128"}
+view_page("https://cyberini.com/") #{"https" : "212.34.250.14:3128"}
