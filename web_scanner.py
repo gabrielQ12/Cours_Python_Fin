@@ -135,25 +135,6 @@ class WebScanner:
         thread2 = threading.Thread(target=self._crawl_end_callback, args=(crawl_thread, crawl_queue))
         thread2.start()
 
-    # def crawl(self,page=None):
-    #     """
-    #     Crawl a page recursively, adding the links to the url list
-    #     :param page: the requested page, if not set the default instance url is used
-    #     :return:
-    #     """
 
-    #     try:
-    #         page_links = self.get_page_links(page)
-    #         for link in page_links:
-    #             if self.stopped:
-    #                 break
-    #             if link not in self.link_list:
-    #                 self.link_list.append(link)
-    #                 print("Link addeed to the list : " + link)
-    #                 self.crawl(link)
-    #     except KeyboardInterrupt:
-    #         print("\nProgram interrupted by user.")
-    #         sys.exit(1)
-    #     except Exception as e:
-    #         print("Error :" + str(e))
-    #         sys.exit(1)
+## a partir de là décision de suivre le code en live sans le recopier car enormememnt de redondance
+

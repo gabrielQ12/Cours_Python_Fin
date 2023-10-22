@@ -4,4 +4,4 @@
 import web_scanner
 
 ws = web_scanner.WebCrawler("une ip")
-ws.crawl()
+ws.crawlcheeck_sqli()
